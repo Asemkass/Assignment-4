@@ -1,0 +1,29 @@
+global:
+  scrape_interval: 15s
+  evaluation_interval: 15s
+  external_labels:
+    monitor: 'student-monitoring'
+
+scrape_configs:
+  - job_name: 'prometheus'
+    static_configs:
+      - targets: ['localhost:9090']
+    metrics_path: /metrics
+
+  - job_name: 'postgresql'
+    static_configs:
+      - targets: ['postgres_exporter:9187']  # ← ИЗМЕНИТЕ ЭТУ СТРОКУ
+    metrics_path: /metrics
+    scrape_interval: 20s
+
+  - job_name: 'node'
+    static_configs:
+      - targets: ['node_exporter:9100']  # ← И ЭТУ ТОЖЕ
+    metrics_path: /metrics
+    scrape_interval: 15s
+
+  - job_name: 'custom_api'
+    static_configs:
+      - targets: ['host.docker.internal:8000']
+    metrics_path: /metrics
+    scrape_interval: 20s
